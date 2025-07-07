@@ -5,13 +5,16 @@ import type { IAccountFormData, IAccountTag, IAccount } from './IAccount'
 export const useAccountStore = defineStore('account', () => {
   const accounts = ref<IAccount[]>([])
 
-  const testAccount = (account: IAccount): void => {
-    console.log(account)
+  const loadAccounts = () => {
+    const stored = localStorage.getItem('accounts')
+    if (stored) {
+      accounts.value = JSON.parse(stored)
+    }
   }
 
   const createAccount = (): IAccount => {
     return {
-      id: Date.now.toString(),
+      id: Math.random().toString(36),
       label: [],
       type: 'Локальная',
       login: '',
@@ -23,6 +26,7 @@ export const useAccountStore = defineStore('account', () => {
     const newAccount = createAccount()
     accounts.value.push(newAccount)
     localStorage.setItem('accounts', JSON.stringify(accounts.value))
+    console.log(newAccount)
 
     return newAccount
   }
@@ -45,6 +49,7 @@ export const useAccountStore = defineStore('account', () => {
 
       accounts.value[index] = updatedAccount
       localStorage.setItem('accounts', JSON.stringify(accounts.value))
+      console.log(updatedAccount)
     }
   }
 
@@ -62,7 +67,15 @@ export const useAccountStore = defineStore('account', () => {
     return tags.map((tag) => tag.text).join('; ')
   }
 
+  const validAccount = (formData: IAccountFormData): boolean => {
+    if (!formData.login.trim()) return false
+    if (formData.type === 'Локальная' && !formData.password.trim()) return false
+    return true
+  }
+
   const accountsCount = computed(() => accounts.value.length)
+
+  loadAccounts()
 
   return {
     accounts,
@@ -72,5 +85,6 @@ export const useAccountStore = defineStore('account', () => {
     updateAccount,
     parseAccountTags,
     stringifyTags,
+    validAccount,
   }
 })

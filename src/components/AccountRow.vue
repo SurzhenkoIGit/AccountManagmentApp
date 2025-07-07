@@ -1,20 +1,30 @@
 <template>
-  <tr class="items-center p-3 rounded-lg bg-white mb-2">
+  <tr class="items-center border border-slate-200 p-3 rounded-lg bg-white mb-2">
     <td class="text-gray-800">
       <input
         v-model="formData.label"
         type="text"
         placeholder="Введите метки через ;"
         maxlength="50"
-        class="w-full rounded text-sm p-2"
+        :class="[
+          'w-full px-3 py-2 border border-slate-300 rounded text-sm transition-all duration-200',
+          'focus:outline-none focus:border-blue-500 focus:ring-3 focus:ring-blue-500/10',
+          { 'border-red-500 ring-3 ring-red-500/10': hasError && showErrors },
+        ]"
+        @blur="handleBlur"
       />
     </td>
 
     <td class="text-gray-800">
       <select
         v-model="formData.type"
-        class="w-full rounded text-sm p-2"
+        :class="[
+          'w-full px-3 py-2 border border-slate-300 rounded text-sm transition-all duration-200',
+          'focus:outline-none focus:border-blue-500 focus:ring-3 focus:ring-blue-500/10',
+          { 'border-red-500 ring-3 ring-red-500/10': hasError && showErrors },
+        ]"
         v-on:change="handleTypeChange"
+        @blur="handleBlur"
       >
         <option value="Локальная">Локальная</option>
         <option value="LDAP">LDAP</option>
@@ -27,7 +37,12 @@
         type="text"
         placeholder="Логин"
         maxlength="100"
-        class="w-full rounded text-sm p-2"
+        :class="[
+          'w-full px-3 py-2 border border-slate-300 rounded text-sm transition-all duration-200',
+          'focus:outline-none focus:border-blue-500 focus:ring-3 focus:ring-blue-500/10',
+          { 'border-red-500 ring-3 ring-red-500/10': !formData.login.trim() && showErrors },
+        ]"
+        @blur="handleBlur"
         required
       />
     </td>
@@ -39,7 +54,12 @@
         type="password"
         placeholder="Пароль"
         maxlength="100"
-        class="w-full rounded text-sm p-2"
+        :class="[
+          'w-full px-3 py-2 border border-slate-300 rounded text-sm transition-all duration-200',
+          'focus:outline-none focus:border-blue-500 focus:ring-3 focus:ring-blue-500/10',
+          { 'border-red-500 ring-3 ring-red-500/10': !formData.password.trim() && showErrors },
+        ]"
+        @blur="handleBlur"
         required
       />
       <div v-else class="bg-gray-100 rounded flex items-center justify-center">
@@ -62,7 +82,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useAccountStore } from '@/stores/Account'
 import type { IAccount, IAccountFormData } from '@/stores/IAccount'
 
@@ -92,7 +112,21 @@ const handleTypeChange = () => {
   }
 }
 
+const handleBlur = () => {
+  showErrors.value = true
+  if (accountStore.validAccount(formData.value)) {
+    accountStore.updateAccount(formData.value)
+  }
+}
+
 const deleteAccount = () => {
   emit('delete', props.account.id)
 }
+
+const hasError = computed(() => {
+  if (!formData.value.login.trim()) return false
+  if (formData.value.type === 'Локальная' && !formData.value.password.trim()) return true
+
+  return false
+})
 </script>

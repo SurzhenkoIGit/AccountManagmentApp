@@ -34,7 +34,7 @@
             v-for="account in accountStore.accounts"
             :key="account.id"
             :account="account"
-            @delete="handleDeleteAccount"
+            @delete="handleDeleteAccount(account.id)"
             :is-table-row="true"
           />
         </tbody>
