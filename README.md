@@ -1,33 +1,32 @@
-# MyManagmentAccountApp
+# Управление учетными записями "MyManagmentAccountApp"
 
-This template should help get you started developing with Vue 3 in Vite.
+Приложение представляет из себя систему хранения и  управления учетными записями.
+--
+## Используемый стек технологий:
+1) Фреймворк - Vue 3;
+2) Маршрутизация - VueRouter 4;
+3) Язык программирования - TypeScript;
+4) State-Manager - Pinia;
+5) Сборщик проекта - Vite;
+6) CSS-фреймворк - Tailwind CSS
+--
+## Функциональность приложения
+1. Управление записями - создание, редактирование и удаление записи
+2. Система меток - возможность добавления меток через разделитель "; "
+3. Локальное хранение - с помощью стейт-менеджера Pinia данные сохраняются даже после обновления страницы
+4. Валидация обязательных для ввода полей
 
-## Recommended IDE Setup
+Каждая учетная запись содержит: ID, метки, тип, логин, пароль. Для LDAP записей пароль не требуется. Метки хранятся как массив объектов с текстовыми значениями
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+---
+## Установка и запуск
+1. С помощью Git Bash склонируйте репозиторий: git clone https://github.com/SurzhenkoIGit/AccountManagmentApp.git
+2. Перейдите в папку проекта: cd MyManagmentAccountApp
+3. Установите зависимости: npm install
+4. Запустите проект: npm run dev
+5. Перейдите по адресу http://localhost:5173/
 
-## Type Support for `.vue` Imports in TS
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+   
 
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
-```
+ 
