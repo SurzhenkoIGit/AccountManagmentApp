@@ -5,7 +5,7 @@
       <button
         type="button"
         class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-lg px-2.5 py-1 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
-        v-on:click="handleClickAdd"
+        v-on:click="addNewAccount"
       >
         +
       </button>
@@ -22,37 +22,44 @@
           class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
         >
           <tr>
-            <th scope="col" class="px-6 py-3">Метки</th>
-            <th scope="col" class="px-6 py-3">Тип записи</th>
-            <th scope="col" class="px-6 py-3">Логин</th>
-            <th scope="col" class="px-6 py-3">Пароль</th>
-            <th scope="col" class="px-6 py-3"><IconTrash /></th>
+            <th scope="col" class="px-10 py-3">Метки</th>
+            <th scope="col" class="px-10 py-3">Тип записи</th>
+            <th scope="col" class="px-10 py-3">Логин</th>
+            <th scope="col" class="px-10 py-3">Пароль</th>
+            <th scope="col" class="px-10 py-3">Действия</th>
           </tr>
         </thead>
-        <tbody></tbody>
+        <tbody>
+          <AccountRow
+            v-for="account in accountStore.accounts"
+            :key="account.id"
+            :account="account"
+            @delete="handleDeleteAccount"
+            :is-table-row="true"
+          />
+        </tbody>
       </table>
+
+      <div v-if="accountStore.accountsCount === 0" class="mt-10 text-center text-lg">
+        <p>Учетных записей пока нет</p>
+        <p class="text-sm text-gray-400">Нажмите "+", чтобы добавить запись</p>
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import IconTrash from '@/components/icons/IconTrash.vue'
 import IconQuestion from '@/components/icons/IconQuestion.vue'
 import { useAccountStore } from '@/stores/Account'
-import type { IAccount } from '@/stores/IAccount'
+import AccountRow from '@/components/AccountRow.vue'
 
 const accountStore = useAccountStore()
 
-const account: IAccount = {
-  id: Date.now(),
-  label: '',
-  type: 'LDAP',
-  login: '',
-  password: '',
+const addNewAccount = () => {
+  accountStore.addAccount()
 }
 
-const handleClickAdd = () => {
-  console.log('CLICK')
-  accountStore.testAccount(account)
+const handleDeleteAccount = (id: string) => {
+  accountStore.removeAccount(id)
 }
 </script>
