@@ -83,7 +83,7 @@
 
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
-import { useAccountStore } from '@/stores/Account'
+import { useAccountStore } from '@/stores/AccountStore'
 import type { IAccount, IAccountFormData } from '@/stores/IAccount'
 
 interface Props {
@@ -112,6 +112,7 @@ const handleTypeChange = () => {
   }
 }
 
+//Считывает фокус на поле. Если все поля заполнены, то применяется метод updateAccount
 const handleBlur = () => {
   showErrors.value = true
   if (accountStore.validAccount(formData.value)) {
@@ -123,6 +124,7 @@ const deleteAccount = () => {
   emit('delete', props.account.id)
 }
 
+//Для валидации полей логина и пароля. Если есть ошибка, подсвечивать поле красным цветом
 const hasError = computed(() => {
   if (!formData.value.login.trim()) return false
   if (formData.value.type === 'Локальная' && !formData.value.password.trim()) return true

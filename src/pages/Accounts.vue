@@ -50,7 +50,7 @@
 
 <script lang="ts" setup>
 import IconQuestion from '@/components/icons/IconQuestion.vue'
-import { useAccountStore } from '@/stores/Account'
+import { useAccountStore } from '@/stores/AccountStore'
 import AccountRow from '@/components/AccountRow.vue'
 
 const accountStore = useAccountStore()
